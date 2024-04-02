@@ -4,6 +4,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "@/context/AuthContext";
 import { Colors } from "@/constants/Colors";
 
 export {
@@ -40,7 +41,11 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
+  );
 }
 
 function RootLayoutNav() {
