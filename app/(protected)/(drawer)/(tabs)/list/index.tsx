@@ -1,10 +1,26 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
+import { useAuth } from "@/context/AuthContext";
 
 const ListIndexScreen = () => {
+  const { token } = useAuth();
+  const [todos, setTodos] = useState();
+  useEffect(() => {
+    const loadTodos = async () => {
+      const response = await fetch(`/api/todos`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await response.json();
+      setTodos(json);
+    };
+    loadTodos();
+  }, []);
   return (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <Text>{JSON.stringify(todos)}</Text>
       <Link href={`/(protected)/(drawer)/(tabs)/list/${43}?foo=sanity`}>
         {43}
       </Link>

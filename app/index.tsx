@@ -29,6 +29,11 @@ const Login = () => {
     }
     setLoading(false);
   };
+  const fetchHello = async () => {
+    const data = await fetch(`/api/hello`);
+    const json = await data.json();
+    alert(json.message);
+  };
 
   return (
     <View style={styles.container}>
@@ -55,11 +60,16 @@ const Login = () => {
         style={styles.inputField}
         placeholderTextColor={"#fff"}
       />
-      <Link href={"/(protected)/(drawer)/(tabs)"} asChild replace>
+      {/* <Link href={"/(protected)/(drawer)/(tabs)"} asChild replace>
         <TouchableOpacity style={styles.button}>
           <Text style={{ color: "#fff" }}>Peek secrete</Text>
         </TouchableOpacity>
-      </Link>
+      </Link> */}
+      <TouchableOpacity style={styles.button}>
+        <Text onPress={fetchHello} style={{ color: "#fff" }}>
+          Say Hello
+        </Text>
+      </TouchableOpacity>
 
       <TouchableOpacity onPress={login} style={styles.button}>
         <Text style={{ color: "#fff" }}>Sign in</Text>
