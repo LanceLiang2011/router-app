@@ -1,5 +1,5 @@
 import axios from "axios";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }: any) => {
       setInitialized(true);
     };
     loadToken();
-  }, []);
+  }, [SecureStore]);
 
   const handleLogin = async (email: string, password: string) => {
     try {
@@ -66,12 +66,15 @@ export const AuthProvider = ({ children }: any) => {
     axios.defaults.headers.common["Authorization"] = "";
   };
 
-  const value = {
-    initialized,
-    onLogin: handleLogin,
-    onRegister: handleRegister,
-    onLogout: handleLogout,
-    token,
-  };
+  const value = useMemo(
+    () => ({
+      initialized,
+      onLogin: handleLogin,
+      onRegister: handleRegister,
+      onLogout: handleLogout,
+      token,
+    }),
+    [initialized, handleLogin, handleRegister, handleLogout, token]
+  );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

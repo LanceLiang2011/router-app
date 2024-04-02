@@ -23,7 +23,7 @@ const Login = () => {
     setLoading(true);
 
     const result = await onLogin!(email, password);
-
+    console.log(result); //FIXME:
     if (result && result.error) {
       alert(result.msg);
     }
@@ -55,11 +55,11 @@ const Login = () => {
         style={styles.inputField}
         placeholderTextColor={"#fff"}
       />
-      {/* <Link href={'/(protected)/(drawer)/(tabs)'} asChild replace>
+      <Link href={"/(protected)/(drawer)/(tabs)"} asChild replace>
         <TouchableOpacity style={styles.button}>
-          <Text style={{ color: '#fff' }}>Sign in</Text>
+          <Text style={{ color: "#fff" }}>Peek secrete</Text>
         </TouchableOpacity>
-      </Link> */}
+      </Link>
 
       <TouchableOpacity onPress={login} style={styles.button}>
         <Text style={{ color: "#fff" }}>Sign in</Text>

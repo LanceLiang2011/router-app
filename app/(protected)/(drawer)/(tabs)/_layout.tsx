@@ -1,13 +1,15 @@
-import { Link, Slot, Tabs, useSegments } from "expo-router";
+import { Tabs, useSegments } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import React from "react";
 import { Colors } from "@/constants/Colors";
 import { Alert, TouchableOpacity } from "react-native";
 import { DrawerToggleButton } from "@react-navigation/drawer";
+import { useAuth } from "@/context/AuthContext";
 
 const ProtectedLayout = () => {
   const segments = useSegments();
+  const { onLogout } = useAuth();
   return (
     <Tabs
       screenOptions={{
@@ -15,11 +17,9 @@ const ProtectedLayout = () => {
         headerStyle: { backgroundColor: Colors.background },
         headerTintColor: Colors.white,
         headerRight: () => (
-          <Link href={`/`} replace asChild>
-            <TouchableOpacity>
-              <Ionicons name="exit-outline" size={24} color={Colors.white} />
-            </TouchableOpacity>
-          </Link>
+          <TouchableOpacity onPress={onLogout}>
+            <Ionicons name="exit-outline" size={24} color={Colors.white} />
+          </TouchableOpacity>
         ),
       }}
     >

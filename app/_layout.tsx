@@ -1,11 +1,12 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 import { Colors } from "@/constants/Colors";
+import { ActivityIndicator } from "react-native";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -49,9 +50,26 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
+  const { initialized, token } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
+
+  useEffect(() => {
+    const isInProtectedRoute = segments[0] === "(protected)";
+    if (!initialized) return;
+    // console.log(isInProtectedRoute); //FIXME:
+    if (token && !isInProtectedRoute) {
+      router.replace(`/(protected)/(drawer)/(tabs)`);
+    } else if (!token && isInProtectedRoute) {
+      router.replace(`/`);
+    }
+  }, [segments, token, router]);
+
+  if (!initialized) return <ActivityIndicator />;
+
   return (
     <>
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
       <Stack
         screenOptions={{
           headerStyle: { backgroundColor: Colors.background },
